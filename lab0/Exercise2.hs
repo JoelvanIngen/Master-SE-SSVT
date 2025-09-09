@@ -1,6 +1,6 @@
 -- Time Spent: 120 min
 
-module Exercise2 (exerciseMain) where
+module Exercise2 (main) where
 
 import System.Random
 
@@ -40,8 +40,8 @@ reportBias :: Bool -> IO ()
 reportBias True = putStrLn "Bias has been found"
 reportBias False = putStrLn "No bias has been found"
 
-exerciseMain :: IO ()
-exerciseMain = do
+main :: IO ()
+main = do
     vals <- probs 10000
     let counts = fillBuckets vals
     putStr "Counts: "
