@@ -12,14 +12,14 @@ and the input and output maintain the same length.-}
 rot13 :: [Char] -> [Char]
 rot13 str = map characterType str
 
---
+--to devide if its upper or lower or not
 characterType :: Char -> Char
 characterType t 
     | 'A' <= t && t <= 'Z'  = turnUpperChar t
     | 'a' <= t && t <= 'z'  = turnLowerChar t
     | otherwise = t
 
-
+--exchange lower 
 turnLowerChar :: Char -> Char
 turnLowerChar lc = exchangeChar
     where
@@ -28,7 +28,7 @@ turnLowerChar lc = exchangeChar
         differenceAsc2 = (differenceAsc1 + 13) `mod` 26
         exchangeChar = chr(ord 'a' + differenceAsc2)
 
-
+--exchange upper
 turnUpperChar :: Char -> Char
 turnUpperChar uc = exchangeChar
     where
@@ -36,10 +36,11 @@ turnUpperChar uc = exchangeChar
         differenceAsc1 = original - ord 'A'
         differenceAsc2 = (differenceAsc1 + 13) `mod` 26
         exchangeChar = chr(ord 'A' + differenceAsc2)
-
+--test if length is right 
 testLength :: [Char] -> Bool
 testLength testChar = length testChar == length (rot13 testChar)
 
+--Test whether it is the original after two changes
 testSymmetry :: String  -> Bool
 testSymmetry testChar = testChar == rot13 (rot13 testChar)
 
