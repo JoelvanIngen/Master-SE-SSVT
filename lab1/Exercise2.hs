@@ -21,11 +21,13 @@ makeSet n
 testCardinality :: Int -> Bool
 testCardinality = cardinality . makeSet
 
+-- Using a number range of 0-20 since negatives would end the program with an
+-- error and higher values take exponentially longer to run
 genSingleInput :: Gen Integer
 genSingleInput = choose (0, 20)
 
 {- Test report: 
-
+ /Just mention results and the fact that it's not all encompassing but a higher range would take forever/
 -}
 
 {-
