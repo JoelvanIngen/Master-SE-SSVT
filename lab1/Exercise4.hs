@@ -1,5 +1,5 @@
 
--- Time Spent: X min
+-- Time Spent: 120 min
 
 -- Ordered list of properties:
 -- The derangement must be the same length as the original list.
