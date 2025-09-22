@@ -25,7 +25,6 @@ isDerangement xs ys = and [x `elem` ys && (index x xs /= index x ys) | x <- xs] 
                      | otherwise = 1 + index n xs
 
 
-
 deran:: Int -> [[Int]]
 deran n = filter (isDerangement [0..n-1]) (permutations [0..n-1])
 
