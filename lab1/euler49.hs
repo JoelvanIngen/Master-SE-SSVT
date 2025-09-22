@@ -4,10 +4,10 @@
 module Euler49 where
 import Math.NumberTheory.Primes.Testing (isPrime)
 import Data.List (sort)
-import Math.NumberTheory.Recurrences (euler)
 
 
 formatOutput :: [(Integer, Integer, Integer)] -> Integer
+formatOutput [] = 0
 formatOutput [(x, y, z)] = read $ show x ++ show y ++ show z
 
 
@@ -44,7 +44,8 @@ main = do
 {-
 I would test the functions in the following way:
 Check if all answers are 12-digits long.
-Seperate all 12-digit ansers into 3, 4-digit triplets.
+According to the question there is only 1 answer so check if there is only 1 output.
+Seperate the 12-digit answer into 3, 4-digit triplets.
 Check if all numbers in the triples are:
 - Prime numbers
 - Spaced are spaced out by 3330
