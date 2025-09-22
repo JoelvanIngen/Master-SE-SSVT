@@ -1,5 +1,5 @@
 
--- Time Spent: X min
+-- Time Spent: 120 min
 
 -- Ordered list of properties:
 -- The derangement must be the same length as the original list.
@@ -23,7 +23,6 @@ isDerangement [] [] = True
 isDerangement xs ys = and [x `elem` ys && (index x xs /= index x ys) | x <- xs] where
       index n (x:xs) | n == x = 0
                      | otherwise = 1 + index n xs
-
 
 
 deran:: Int -> [[Int]]
