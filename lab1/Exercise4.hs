@@ -2,6 +2,9 @@
 -- Time Spent: 120 min
 
 {-
+used dependency "QuickCheck" for testing
+cabal install QuickCheck
+
 Ordered list of properties:
 The derangement must be the same length as the original list.
 The derangement must contain the same elements as the original list.
