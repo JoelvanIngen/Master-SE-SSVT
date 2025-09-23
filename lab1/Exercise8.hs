@@ -2,6 +2,7 @@ module Exercise8 where
 
 import Data.List
 import Test.QuickCheck
+import qualified Control.Applicative as incorrect
 
 --Time spent 150 min 
 
@@ -43,6 +44,8 @@ primes = sieve[2..]
     Generate prime numbers using the Sieve of Eratosthenes, 
     then check whether the generated results are prime numbers 
     through Trial Division, and finally output the required values as needed.
+    Several counterexamples are generated to prove the conjecture is incorrect.
+    Only one counterexample is needed, but this is to show multiple possible ones.
 -}  
 
 main :: IO ()
