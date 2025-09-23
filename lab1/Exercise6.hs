@@ -1,6 +1,6 @@
-
 module Exercise6 where
--- Time spent: 180 min
+
+-- Time spent: 240 min
 {- 
 
  Exercise 6
