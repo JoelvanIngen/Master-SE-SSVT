@@ -103,9 +103,7 @@ dlaw: applies the distributive law to produce CNF.
 Test 1: p -> q -> expected ¬p ∨ q. 
 Test 2: p <-> q -> expected (p ∧ q) ∨ (¬p ∧ ¬q). 
 Test 3: p ∨ (q ∧ r) -> expected (p ∨ q) ∧ (p ∨ r). 
-
 The program output matches these expected results.
-
 -}
 
 main :: IO ()
