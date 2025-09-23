@@ -5,6 +5,16 @@ import Test.QuickCheck
 
 --Time spent 150 min 
 
+{-
+Euclid numbers are defined as the product of the first n prime numbers plus 1. 
+They themselves are not always prime (for example, 30031 is a composite number). 
+However, a Euclid number is never divisible by any of the first n prime numbers. 
+This means that Euclid numbers are either new prime numbers or have prime factors 
+larger than the first n primes.
+This property demonstrates that no finite list of primes can contain all prime 
+numbers—a foundational idea in Euclid’s proof of the existence of infinitely many primes.
+-}
+
 --A lot of time was spent writing a prime number generator, 
 --and at the same time, a lot of time was spent understanding the Sieve of Eratosthenes.
 
@@ -32,6 +42,7 @@ main = do
     putStrLn "The first seven results"
     mapM_ print (take 7 counterexamples)
  
+
 
 
 
