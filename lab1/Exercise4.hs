@@ -31,8 +31,9 @@ Lastly it was run on the deran function which generates all derangements of a li
 
 So we can conclude that the tests and the functions are correct.
 
-A range from 0 to 100 was chose both because negative numbers break the 0..n-1
-logic that the assignment wants and because bigger than that takes too long.
+A range from 2 to 10 was chose both because negative numbers like n=0 (n-1=-1),
+break the 0..n-1 logic that the assignment wants. when n=1 it gives [0..n-1] = [0]
+which cannot have a derangement and not larger than 10 because thatakes too long.
 -}
 
 module Exercise4 where
@@ -54,7 +55,6 @@ isDerangement xs ys = and [x `elem` ys && (index x xs /= index x ys) | x <- xs] 
 
 
 deran:: Int -> [[Int]]
-deran 0 = [[]]
 deran n = filter (isDerangement [0..n-1]) (permutations [0..n-1])
 
 
@@ -81,7 +81,7 @@ testDerangement xs ys = testLength xs ys
 
 
 genSingleInput :: Gen Int
-genSingleInput = choose (0, 100)
+genSingleInput = choose (2, 10)
 
 
 main :: IO ()
@@ -110,8 +110,8 @@ main = do
     n <- generate genSingleInput
 
     print "Quickchecks: "
-    quickCheck $ forAll (elements (deran n)) $ \xs -> testLength [0..n] xs
-    quickCheck $ forAll (elements (deran n)) $ \xs -> testSameElements [0..n] xs
-    quickCheck $ forAll (elements (deran n)) $ \xs -> testDifferentPositions [0..n] xs
-    quickCheck $ forAll (elements (deran n)) $ \xs -> testDerangement [0..n] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testLength [0..n-1] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testSameElements [0..n-1] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testDifferentPositions [0..n-1] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testDerangement [0..n-1] xs
 
