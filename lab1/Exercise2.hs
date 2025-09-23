@@ -46,6 +46,7 @@ import Test.QuickCheck (Gen, choose, quickCheck)
 -- Final solution with help from:
 -- https://stackoverflow.com/questions/59742656/haskell-implement-powerset-function-of-a-set
 -- Outputs a different order than in the assignment, but sets are unordered so this does not matter
+-- This is due to implementation being done with lists, but the ordered behaviour is irrelevant here
 powerset :: [Int] -> [[Int]]
 powerset [] = [[]]
 powerset (x:xs) = [x:ps | ps <- powerset xs] ++ powerset xs
