@@ -6,6 +6,9 @@ We included two properties of factorial numbers, which are:
 2. The factorial of n + 1 is (n + 1) * factorial n
 
 Both of these tests are implemented using QuickCheck Properties, and both pass with 100 tests.
+We can thus conclude that the factorial function is statistically correct, as proven by the passing tests.
+
+To test, we take numbers between 0 and 20, where we have chosen the upper bound arbitrarily to prevent exploding numbers.
 -}
 
 module Exercise1 (main) where
