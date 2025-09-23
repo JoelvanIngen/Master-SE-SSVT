@@ -1,10 +1,14 @@
 -- Time spent: 210 min.
 
 {- Test report: 
- /Just mention results and conclusions and the fact that it's not all encompassing but a higher range would take forever/
+The tests simply run if the makeSet function creates a set of the correct length,
+and if the set length and powerset length have the correct ratio.
+The range of inputs is set to 0-20 since negative numbers cannot be made into a set of that length
+and numbers over 20 take exponentially longer to run. It is possible to test higher numbers though.
+These tests of course are not exhaustive as explained in question 2.
 
 Some more tests could be made by testing if the results of the makeSet and powerset functions
-actually return proper sets, to prove the property that testCardinality compares a set and its
+actually return proper sets, to prove that testCardinality compares a set and its
 superset.
 -}
 
@@ -41,7 +45,7 @@ The proof is done by induction earlier on, not by the test.
 
 module Exercise2 (main) where
 
-import Test.QuickCheck (Gen, choose, quickCheck)
+import Test.QuickCheck (Gen, choose, quickCheck, forAll)
 
 -- Final solution with help from:
 -- https://stackoverflow.com/questions/59742656/haskell-implement-powerset-function-of-a-set
@@ -63,12 +67,15 @@ makeSet n
 testCardinality :: Int -> Bool
 testCardinality = cardinality . makeSet
 
+testSetLength :: Int -> Bool
+testSetLength n = length (makeSet n) == n
+
 -- Using a number range of 0-20 since negatives would end the program with an
 -- error and higher values take exponentially longer to run
-genSingleInput :: Gen Integer
+genSingleInput :: Gen Int
 genSingleInput = choose (0, 20)
 
 main :: IO ()
 main = do
-    -- TODO: make this only use non-negative numbers
-    quickCheck testCardinality
+    quickCheck $ forAll genSingleInput testSetLength
+    quickCheck $ forAll genSingleInput testCardinality
