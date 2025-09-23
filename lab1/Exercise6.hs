@@ -1,4 +1,6 @@
 module Exercise6 where
+import Data.List
+import Test.QuickCheck
 
 -- Time spent: 240 min
 {- 
@@ -14,10 +16,6 @@ cnf :: Form -> Form
 
 -}
 
-module Exercise6 where
-
-import Data.List
-import Test.QuickCheck
 
 type Name = Int
 data Form = Prop Name
