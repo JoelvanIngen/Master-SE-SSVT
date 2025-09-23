@@ -1,10 +1,20 @@
--- Time spent: 240 min
 
-{- Test report:
+module Exercise6 where
+-- Time spent: 180 min
+{- 
+
+ Exercise 6
+ Week 3’s lectures discusses the conversion of Boolean formulas (formulas of propositional logic) 
+into CNF form. The lecture notes also give a definition of a Haskell datatype for formulas of 
+propositional logic, using lists for conjunctions and disjunctions. Your task is to write a Haskell 
+program for converting formulas into CNF.
+ Use the following declaration: 
+cnf :: Form -> Form
+ Deliverables: conversion program with documentation, indication of time spent.
 
 -}
 
-module Exercise6 (main) where
+module Exercise6 where
 
 import Data.List
 import Test.QuickCheck
@@ -16,7 +26,7 @@ data Form = Prop Name
     | Dsj [Form]
     | Impl Form Form
     | Equiv Form Form
-    deriving (Eq,Ord)
+    deriving (Eq,Ord,Show)
 
 {-
 To convert any formula into CNF form the following order of steps is needed:
@@ -59,10 +69,7 @@ dlaw :: Form -> Form
 dlaw (Prop x) = Prop x
 dlaw (Neg f) = Neg (dlaw f)
 dlaw (Cnj fs) = Cnj (map dlaw fs)
-dlaw (Dsj fs) = Dsj (map dlaw fs)
--- dlaw (Dsj f1 (Cnj fs)) = {- dsj every part of f1 -}
--- Essentially here is every literal in P (f1) should be multiplied with Q ∧ R separately
--- So make (P1 ∨ (Q ∧ R)) ∧ etc. and after that do (P1 ∨ Q) ∧ (P1 ∨ R) ∧ etc.
+
 dlaw (Dsj [f1, Cnj fs]) = 
     let distributed = map (\g -> Dsj [dlaw f1, dlaw g]) fs
     in Cnj distributed
@@ -71,9 +78,26 @@ dlaw (Dsj [Cnj fs, f2]) =
     let distributed = map (\g -> Dsj [dlaw g, dlaw f2]) fs
     in Cnj distributed
 
-cnf :: Form -> Form
-cnf = dlaw . nnf . arrowfree -- TODO: Is this the right order?
+dlaw (Dsj fs) = Dsj (map dlaw fs)    
+dlaw f = f
 
-main :: Form -> Form
-main f = do
-    cnf f
+-- Essentially here is every literal in P (f1) should be multiplied with Q ∧ R separately
+-- So make (P1 ∨ (Q ∧ R)) ∧ etc. and after that do (P1 ∨ Q) ∧ (P1 ∨ R) ∧ etc.
+
+p = Prop 1
+q = Prop 2
+r = Prop 3
+
+cnf :: Form -> Form
+cnf = dlaw . nnf . arrowfree
+
+test1 = cnf (Impl p q)
+test2 = cnf (Equiv p q)
+test3 = cnf (Dsj [p, Cnj [q, r]])
+
+main :: IO ()
+main = do
+    print test1
+    print test2
+    print test3
+    
