@@ -1,4 +1,4 @@
--- Time spent: 180 min
+-- Time spent: 240 min
 
 {- Test report:
 
@@ -60,16 +60,20 @@ dlaw (Prop x) = Prop x
 dlaw (Neg f) = Neg (dlaw f)
 dlaw (Cnj fs) = Cnj (map dlaw fs)
 dlaw (Dsj fs) = Dsj (map dlaw fs)
-dlaw (Dsj f1 (Cnj fs)) = {- dsj every part of f1 -}
+-- dlaw (Dsj f1 (Cnj fs)) = {- dsj every part of f1 -}
 -- Essentially here is every literal in P (f1) should be multiplied with Q ∧ R separately
 -- So make (P1 ∨ (Q ∧ R)) ∧ etc. and after that do (P1 ∨ Q) ∧ (P1 ∨ R) ∧ etc.
+dlaw (Dsj [f1, Cnj fs]) = 
+    let distributed = map (\g -> Dsj [dlaw f1, dlaw g]) fs
+    in Cnj distributed
 
-p = Prop 1
-q = Prop 2
+dlaw (Dsj [Cnj fs, f2]) = 
+    let distributed = map (\g -> Dsj [dlaw g, dlaw f2]) fs
+    in Cnj distributed
 
 cnf :: Form -> Form
 cnf = dlaw . nnf . arrowfree -- TODO: Is this the right order?
 
-main :: IO ()
-main = do
-    quickCheck cnf -- TODO: actually make test for this
+main :: Form -> Form
+main f = do
+    cnf f
