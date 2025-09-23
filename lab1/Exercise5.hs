@@ -5,7 +5,8 @@ This file contains the solution for finding the thief. It finds out who accuses 
 generates a list of accusers per person, and then finds the person who is accused by exactly
 three people, as the thief is accused by the three people who are speaking the truth.
 We can verify that the solution is correct by the fact it finds a person who is accused three times,
-and does not find any other people meeting these criteria.
+and does not find any other people meeting these criteria. The "three accusers" rule is determined by the
+exercise stating that three people speak the truth.
 -}
 
 module Exercise5 where
