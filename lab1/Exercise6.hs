@@ -94,16 +94,15 @@ test2 = cnf (Equiv p q)
 test3 = cnf (Dsj [p, Cnj [q, r]])
 
 {-Test Report 
+  The program correctly converts Boolean formulas into CNF using three steps:
+  arrowfree: removes implications and equivalences
+  nnf: converts formulas into Negation Normal Form
+  dlaw: applies the distributive law to produce CNF
 
-The program correctly converts Boolean formulas into CNF using three steps: 
-arrowfree: removes implications and equivalences. 
-nnf: converts formulas into Negation Normal Form. 
-dlaw: applies the distributive law to produce CNF. 
-
-Test 1: p -> q -> expected ¬p ∨ q. 
-Test 2: p <-> q -> expected (p ∧ q) ∨ (¬p ∧ ¬q). 
-Test 3: p ∨ (q ∧ r) -> expected (p ∨ q) ∧ (p ∨ r). 
-The program output matches these expected results.
+  Test 1: p -> q -> expected ¬p ∨ q
+  Test 2: p <-> q -> expected (p ∧ q) ∨ (¬p ∧ ¬q)
+  Test 3: p ∨ (q ∧ r) -> expected (p ∨ q) ∧ (p ∨ r)
+  The program output matches these expected results
 -}
 
 main :: IO ()
