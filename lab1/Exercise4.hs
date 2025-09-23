@@ -2,16 +2,18 @@
 -- Time Spent: 120 min
 
 {-
-used dependency "QuickCheck" for testing
+- used dependencies:
 cabal install QuickCheck
 
-Ordered list of properties:
+- Ordered list of properties:
 The derangement must be the same length as the original list.
 The derangement must contain the same elements as the original list.
 All elements of the derangement must be in a different postion than their original position.
 
+- Can you automate the process?
+Yes, you can automate the process of checking if the derangements are correct by using quickCheck.
 
-Test report:
+- Test report:
 According to the wikipedia page on derangements: "a derangement is a permutation
 of the elements of a set in which no element appears in its original position.
 In other words, a derangement is a permutation that has no fixed points".
@@ -28,6 +30,9 @@ The tests were also ran on a correct derangement which resulted in a true output
 Lastly it was run on the deran function which generates all derangements of a list and according to the tests all these derangements where correct.
 
 So we can conclude that the tests and the functions are correct.
+
+A range from 0 to 100 was chose both because negative numbers break the 0..n-1
+logic that the assignment wants and because bigger than that takes too long.
 -}
 
 module Exercise4 where
@@ -49,6 +54,7 @@ isDerangement xs ys = and [x `elem` ys && (index x xs /= index x ys) | x <- xs] 
 
 
 deran:: Int -> [[Int]]
+deran 0 = [[]]
 deran n = filter (isDerangement [0..n-1]) (permutations [0..n-1])
 
 
@@ -74,6 +80,10 @@ testDerangement xs ys = testLength xs ys
                         && testDifferentPositions xs ys
 
 
+genSingleInput :: Gen Int
+genSingleInput = choose (0, 100)
+
+
 main :: IO ()
 main = do
     -- Empty lists
@@ -94,9 +104,14 @@ main = do
 
     -- Correct
     let correctTest = testDerangement [0,1,2,3] [3,0,1,2]
-    print $ "Correct: " ++ show correctTest
+    print $ "Correct example: " ++ show correctTest
 
     -- All derangements of length n
-    let n = 4
-    let testAllDeran = and [testDerangement [0..n] x | x <- deran n]
-    print $ "Test all derangements using deran: " ++ show testAllDeran
+    n <- generate genSingleInput
+
+    print "Quickchecks: "
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testLength [0..n] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testSameElements [0..n] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testDifferentPositions [0..n] xs
+    quickCheck $ forAll (elements (deran n)) $ \xs -> testDerangement [0..n] xs
+
