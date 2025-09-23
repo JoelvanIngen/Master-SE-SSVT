@@ -1,6 +1,7 @@
 module Exercise6 where
 import Data.List
 import Test.QuickCheck
+import qualified Data.Type.Bool as followed
 
 -- Time spent: 240 min
 {- 
@@ -62,7 +63,7 @@ nnf (Dsj fs) = Dsj (map nnf fs)
 nnf (Neg (Cnj fs)) = Dsj (map (nnf . Neg) fs)
 nnf (Neg (Dsj fs)) = Cnj (map (nnf . Neg) fs)
 
--- TODO: Convert using distributive law ( (P ∨ (Q ∧ R)) -> (P ∨ Q) ∧ (P ∨ R) )
+-- Convert using distributive law ( (P ∨ (Q ∧ R)) -> (P ∨ Q) ∧ (P ∨ R) )
 dlaw :: Form -> Form
 dlaw (Prop x) = Prop x
 dlaw (Neg f) = Neg (dlaw f)
@@ -79,9 +80,6 @@ dlaw (Dsj [Cnj fs, f2]) =
 dlaw (Dsj fs) = Dsj (map dlaw fs)    
 dlaw f = f
 
--- Essentially here is every literal in P (f1) should be multiplied with Q ∧ R separately
--- So make (P1 ∨ (Q ∧ R)) ∧ etc. and after that do (P1 ∨ Q) ∧ (P1 ∨ R) ∧ etc.
-
 p = Prop 1
 q = Prop 2
 r = Prop 3
@@ -93,16 +91,17 @@ test1 = cnf (Impl p q)
 test2 = cnf (Equiv p q)
 test3 = cnf (Dsj [p, Cnj [q, r]])
 
-{-Test Report 
+{-Test Report:
   This program correctly converts a Boolean formula to CNF using the following three steps:
-  arrowfree: Eliminates entailment and equivalence relations
+  arrowfree: Eliminates implication and equivalence relations
   nnf: Converts the formula to negation normal form
-  dlaw: Applying the distributive law to generate CNF
+  dlaw: Applies the distributive law to generate CNF
 
   Test 1: p -> q -> Expected ¬p ∨ q
   Test 2: p <-> q -> Expected (p ∧ q) ∨ (¬p ∧ ¬q)
   Test 3: p ∨ (q ∧ r) -> Expected (p ∨ q) ∧ (p ∨ r)
-  The program output matches these expected results.
+  The program output matches these expected results, so each basic step is followed.
+  More complicated tests should be done to test formulas that don't follow this specific format.
 -}
 
 main :: IO ()
