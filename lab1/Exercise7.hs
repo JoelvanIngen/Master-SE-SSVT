@@ -18,7 +18,7 @@ Test reports:
 
 -}
 
-module Exercise7 where
+module Exercise7 (main) where
 
 import Test.QuickCheck
 import SetOrd

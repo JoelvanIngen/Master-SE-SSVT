@@ -1,4 +1,4 @@
-module Exercise5 where
+module Exercise5 (main) where
 
 data Boy = Matthew | Peter | Jack | Arnold | Carl
   deriving (Eq, Show)

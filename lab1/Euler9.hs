@@ -14,7 +14,7 @@ Check what numbers are in the triplet and:
 -}
 
 
-module Euler9 where
+module Euler9 (euler9, main) where
 
 
 calculateProduct :: [(Integer, Integer, Integer)] -> Integer

@@ -1,4 +1,4 @@
-module Exercise9 where
+module Exercise9 (main) where
 import Test.QuickCheck
 import Data.List
 -- Time spent: 108 minutes

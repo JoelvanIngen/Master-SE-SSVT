@@ -15,7 +15,7 @@ Check if all numbers in the triples are:
 - Permutations of eachother
 -}
 
-module Euler49 where
+module Euler49 (euler49, main) where
 import Math.NumberTheory.Primes.Testing (isPrime)
 import Data.List (sort)
 
