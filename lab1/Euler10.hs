@@ -1,4 +1,8 @@
-module Euler10 (euler10) where
+-- Time spent: 120 min
+
+-- Extra dependency installed: primes
+
+module Euler10 (euler10, main) where
 
 import Data.Numbers.Primes
 
@@ -36,11 +40,14 @@ sumPrimes = sum . primesUnder
 euler10 :: Integer
 euler10 = sumPrimes 2000000
 
+main :: Integer
+main = euler10
+
 {- Test description:
 To test this function, the following things should be tested for:
 It should test that not every input would give the same answer (no hardcoding)
 Then, the outputs of those tests should be cross-checked with the result
 of another (correct) algorithm for this problem (though this does not prove that both work).
-Another possibility is to test if every number generated before summing is infact a prime
+A more indepth way is to test if every number generated before summing is infact a prime
 number below the input limit, and if the number summed is actually the sum of all members.
 -}
