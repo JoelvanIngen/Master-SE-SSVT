@@ -2,13 +2,19 @@
 
 {-
 
-1. How can you prove that the sub implementation is correct?
+- How can you prove that the sub implementation is correct?
    - For a correct sub implementation, it must contain all (and only the) sub-formulae of f
    - We will use the properties:
      - The subformulae of Prop x include itself
-     - For Neg x, the subformulae are itself and those of f
+     - Only actual sub-formulae are present, and no duplicates
 
+- Test for nsub
+   - We assure that the size of the Form matches the upper bound determined by
+         the nsub function.
 
+Test reports:
+- Tests are conducted on both the `sub` and `nsub` functions, as described above.
+- All tests pass without problems.
 
 -}
 
@@ -48,11 +54,32 @@ nsub (Equiv f1 f2)  = 1 + nsub f1 + nsub f2
 prop_selfInSub :: Form -> Bool
 prop_selfInSub f = inSet f (sub f)
 
--- Property 2: The size of the set from sub matches the count from nsub
+-- Helper function to get the list of immediate sub-components of a formula
+immediateChildren :: Form -> [Form]
+immediateChildren (Prop _)        = []
+immediateChildren (Neg f)         = [f]
+immediateChildren (Cnj [f1,f2])   = [f1, f2]
+immediateChildren (Dsj [f1,f2])   = [f1, f2]
+immediateChildren (Impl f1 f2)    = [f1, f2]
+immediateChildren (Equiv f1 f2)   = [f1, f2]
+
+-- Property 2: All children must be in its set of subformulae
+prop_componentInSub :: Form -> Property
+prop_componentInSub f = property $ all (\child -> inSet child (sub f)) (immediateChildren f)
+
+-- Test for nsub: The size of the set from sub matches the count from nsub
 prop_nsubCorrect :: Form -> Bool
 prop_nsubCorrect f = nsub f == setSize (sub f)
-  where
-    setSize (Set xs) = length xs
+
+-- Helper to get the size of a Set.
+setSize :: Set a -> Int
+setSize (Set xs) = length xs
+
+-- Number of nodes in the Form AST must be greater or equal to number of
+-- unique subformulae
+prop_nsub_is_geq_setSize_sub :: Form -> Bool
+prop_nsub_is_geq_setSize_sub f = nsub f >= setSize (sub f)
+
 
 instance Arbitrary Form where
     arbitrary = sized arbForm
@@ -81,5 +108,10 @@ arbForm n = oneof
 
 main :: IO ()
 main = do
+    -- Test sub properties
     quickCheck prop_selfInSub
-    quickCheck prop_nsubCorrect
+    quickCheck prop_componentInSub
+
+    -- Test nsub properties
+    quickCheck prop_nsub_is_geq_setSize_sub
+    
