@@ -1,6 +1,19 @@
 
 -- Time spend: 30 min
 
+{-
+Test if empty lists are handeled correctly.
+Test if the program doesn't crash if there is no valid triplet in the input domain.
+Test if there is only 1 output, because according to the question there exists
+    exactly 1 pythagorean triplet for which a + b + c = 1000.
+Check what numbers are in the triplet and:
+- Test if a < b < c.
+- Test if a + b + c = 1000.
+- Test if a^2 + b^2 = c^2.
+- Test if the output of the program is 31875000.
+-}
+
+
 module Euler9 where
 
 
@@ -26,16 +39,3 @@ euler9 = calculateProduct $ generateTriplets [1..998]
 main :: IO ()
 main = do
     print euler9
-
-
-{-
-Test if empty lists are handeled correctly.
-Test if the program doesn't crash if there is no valid triplet in the input domain.
-Test if there is only 1 output, because according to the question there exists
-    exactly 1 pythagorean triplet for which a + b + c = 1000.
-Check what numbers are in the triplet and:
-- Test if a < b < c.
-- Test if a + b + c = 1000.
-- Test if a^2 + b^2 = c^2.
-- Test if the output of the program is 31875000.
--}

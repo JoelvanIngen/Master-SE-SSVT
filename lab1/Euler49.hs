@@ -1,6 +1,20 @@
 
 -- Time spend: 120 min
 
+-- Used dependency "arithmoi" for isPrime function
+-- cabal install arithmoi
+
+{-
+I would test the functions in the following way:
+Check if all answers are 12-digits long.
+According to the question there is only 1 answer so check if there is only 1 output.
+Seperate the 12-digit answer into 3, 4-digit triplets.
+Check if all numbers in the triples are:
+- Prime numbers
+- Spaced are spaced out by 3330
+- Permutations of eachother
+-}
+
 module Euler49 where
 import Math.NumberTheory.Primes.Testing (isPrime)
 import Data.List (sort)
@@ -39,15 +53,3 @@ euler49 = formatOutput $ generateTriplets generatePrimeCanidates
 main :: IO ()
 main = do
     print euler49
-
-
-{-
-I would test the functions in the following way:
-Check if all answers are 12-digits long.
-According to the question there is only 1 answer so check if there is only 1 output.
-Seperate the 12-digit answer into 3, 4-digit triplets.
-Check if all numbers in the triples are:
-- Prime numbers
-- Spaced are spaced out by 3330
-- Permutations of eachother
--}
