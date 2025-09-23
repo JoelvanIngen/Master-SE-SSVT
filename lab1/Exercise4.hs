@@ -1,15 +1,35 @@
 
 -- Time Spent: 120 min
 
--- Ordered list of properties:
--- The derangement must be the same length as the original list.
--- The derangement must contain the same elements as the original list.
--- All elements of the derangement must be in a different postion than their original position.
+{-
+Ordered list of properties:
+The derangement must be the same length as the original list.
+The derangement must contain the same elements as the original list.
+All elements of the derangement must be in a different postion than their original position.
+
+
+Test report:
+According to the wikipedia page on derangements: "a derangement is a permutation
+of the elements of a set in which no element appears in its original position.
+In other words, a derangement is a permutation that has no fixed points".
+source: https://en.wikipedia.org/wiki/Derangement
+
+Therefore we can test if all no elements appear in their original position.
+We can test if the derangement has the same length as the original list because it is a permutation.
+And because it is a permutation, we can test if both lists contain the same elements.
+
+These test were ran on lists with incorrect derangements, where either the length, elements or position of elements where incorrect.
+These tests all returned false which means that the tests correctly identified the incorrect derangements.
+
+The tests were also ran on a correct derangement which resulted in a true output meaning it correctly identifies correct derangements.
+Lastly it was run on the deran function which generates all derangements of a list and according to the tests all these derangements where correct.
+
+So we can conclude that the tests and the functions are correct.
+-}
 
 module Exercise4 where
 import Data.List (permutations, sort, elemIndex)
 import Test.QuickCheck
-import Test.QuickCheck.Test (test)
 
 
 infix 1 -->
