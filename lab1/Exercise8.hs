@@ -39,11 +39,18 @@ primes = sieve[2..]
     where
         sieve (p:xs) = p : sieve [x | x <- xs, x `mod` p /= 0]
 
+{-  Test Report
+    Generate prime numbers using the Sieve of Eratosthenes, 
+    then check whether the generated results are prime numbers 
+    through Trial Division, and finally output the required values as needed.
+-}  
+
 main :: IO ()
 main = do
     putStrLn "The first seven results"
     mapM_ print (take 7 counterexamples)
  
+
 
 
 
