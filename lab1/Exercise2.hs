@@ -41,7 +41,7 @@ The proof is done by induction earlier on, not by the test.
 
 module Exercise2 (main) where
 
-import Test.QuickCheck (Gen, choose, quickCheck)
+import Test.QuickCheck (Gen, choose, quickCheck, forAll)
 
 -- Final solution with help from:
 -- https://stackoverflow.com/questions/59742656/haskell-implement-powerset-function-of-a-set
@@ -65,10 +65,9 @@ testCardinality = cardinality . makeSet
 
 -- Using a number range of 0-20 since negatives would end the program with an
 -- error and higher values take exponentially longer to run
-genSingleInput :: Gen Integer
+genSingleInput :: Gen Int
 genSingleInput = choose (0, 20)
 
 main :: IO ()
 main = do
-    -- TODO: make this only use non-negative numbers
-    quickCheck testCardinality
+    quickCheck $ forAll genSingleInput testCardinality
