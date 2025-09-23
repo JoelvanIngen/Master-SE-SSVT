@@ -1,8 +1,13 @@
--- Time spent: x min.
+-- Time spent: 180 min
 
-module Exercise6 where
+{- Test report:
+
+-}
+
+module Exercise6 (main) where
 
 import Data.List
+import Test.QuickCheck
 
 type Name = Int
 data Form = Prop Name
@@ -13,16 +18,19 @@ data Form = Prop Name
     | Equiv Form Form
     deriving (Eq,Ord)
 
--- cnf :: Form -> Form
--- cnf = 
-    -- Here, do a different action per type of proposition
-    -- P --> Q -> !P v Q
-    -- P <--> Q -> (P ^ Q) v (!P ^ !Q)
-    -- Then
-    -- double negate simple prop !(!P)
-    -- !(P v Q) -> !P ^ !Q and reverse for v/^
-    -- Then, according to several sources
-    -- (P v (Q ^ R)) -> (P v Q) ^ (P v R) (but not reverse for v/^?)
+{-
+To convert any formula into CNF form the following order of steps is needed:
+Remove implication and equivalence (remove arrows):
+- P --> Q -> ¬P ∨ Q
+- P <--> Q -> (P ∧ Q) ∨ (¬P ∧ ¬Q)
+Then, convert to negation normal form (logically equivalent, but split props into negations):
+- P -> ¬(¬P)
+- ¬(P ∨ Q) -> ¬P ∧ ¬Q and reverse for ∨/∧
+Then, use distributive law:
+- (P ∨ (Q ∧ R)) -> (P ∨ Q) ∧ (P ∨ R) (but not reverse for ∨/∧, since this is CNF not DNF)
+This makes a logically equivalent formula that exists only of conjuctions of disjunctions of atoms:
+(P ∨ Q) ∧ (P ∨ R) ∧ ...
+-}
 
 -- Replaces implications and equivalences with logical equivalences
 arrowfree :: Form -> Form
@@ -46,18 +54,22 @@ nnf (Dsj fs) = Dsj (map nnf fs)
 nnf (Neg (Cnj fs)) = Dsj (map (nnf . Neg) fs)
 nnf (Neg (Dsj fs)) = Cnj (map (nnf . Neg) fs)
 
--- TODO: Convert using distributive law ( (P v (Q ^ R)) -> (P v Q) ^ (P v R) )
+-- TODO: Convert using distributive law ( (P ∨ (Q ∧ R)) -> (P ∨ Q) ∧ (P ∨ R) )
 dlaw :: Form -> Form
 dlaw (Prop x) = Prop x
 dlaw (Neg f) = Neg (dlaw f)
 dlaw (Cnj fs) = Cnj (map dlaw fs)
 dlaw (Dsj fs) = Dsj (map dlaw fs)
 dlaw (Dsj f1 (Cnj fs)) = {- dsj every part of f1 -}
--- Essentially here is every part of P (f1) should be multiplied with Q ^ R separately
--- So make P1 v (Q ^ R) etc. and after that do (P1 v Q) ^ (P1 v R) etc.
+-- Essentially here is every literal in P (f1) should be multiplied with Q ∧ R separately
+-- So make (P1 ∨ (Q ∧ R)) ∧ etc. and after that do (P1 ∨ Q) ∧ (P1 ∨ R) ∧ etc.
 
 p = Prop 1
 q = Prop 2
 
--- main :: IO ()
--- main = do
+cnf :: Form -> Form
+cnf = dlaw . nnf . arrowfree -- TODO: Is this the right order?
+
+main :: IO ()
+main = do
+    quickCheck cnf -- TODO: actually make test for this
