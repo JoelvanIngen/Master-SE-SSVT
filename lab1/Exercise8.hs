@@ -22,7 +22,9 @@ counterexamples :: [([Integer], Integer)]
 counterexamples = [(take n primes,product(take n primes ) + 1) 
                     | n<-[1..] 
                     , not (isPrime( product(take n primes ) + 1))]
-
+                    
+--I'm thinking about whether I can use external libraries;
+-- if I can, it would be much simpler.
 --Check all odd numbers not exceeding √n to see if none of them can divide n. 
 --If so, it means that n is a prime number.
 isPrime :: Integer -> Bool
@@ -42,6 +44,7 @@ main = do
     putStrLn "The first seven results"
     mapM_ print (take 7 counterexamples)
  
+
 
 
 
