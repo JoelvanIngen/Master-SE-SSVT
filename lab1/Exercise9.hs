@@ -74,6 +74,10 @@ main = do
     print $ isPermutation [1,2,3] [1,2,3]     -- True
     print $ isPermutation [1] [1]             -- True
     print $ isPermutation [1] []              -- False
+    print $ isPermutation "abcd" "dbac"       -- True
+    print $ isPermutation "abc" "def"         -- False
+    print $ isPermutation "a" "abcd"          -- False
+    print $ isPermutation "a" ""              -- False
 
 
     quickCheck (forAll generateList prop_selfPermutation)
