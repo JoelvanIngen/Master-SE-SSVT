@@ -1,8 +1,8 @@
-module Exercise8 where
+module Exercise8 (main) where
 
 import Data.List
 import Test.QuickCheck
-import qualified Control.Applicative as incorrect
+import qualified Control.Applicative
 
 --Time spent 150 min 
 

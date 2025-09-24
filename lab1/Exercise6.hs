@@ -1,7 +1,7 @@
-module Exercise6 where
+module Exercise6 (main) where
 import Data.List
 import Test.QuickCheck
-import qualified Data.Type.Bool as followed
+import qualified Data.Type.Bool
 
 -- Time spent: 240 min
 {- 

@@ -36,7 +36,7 @@ break the 0..n-1 logic that the assignment wants. when n=1 it gives [0..n-1] = [
 which cannot have a derangement and not larger than 10 because thatakes too long.
 -}
 
-module Exercise4 where
+module Exercise4 (main) where
 import Data.List (permutations, sort, elemIndex)
 import Test.QuickCheck
 

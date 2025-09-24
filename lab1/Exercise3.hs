@@ -6,7 +6,7 @@ Properties to test
 • even or (\ x -> (even x && x > 3) || even x)
 -}
 
-module Exercise3 where
+module Exercise3 (main) where
 
 domain :: [Integer]
 domain = [-10..10]
