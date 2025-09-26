@@ -1,5 +1,13 @@
 -- Time spent: 90 min
 
+{-
+We implemented the transitive closure for a relation.
+The algorithm takes the current state of the closure (which is the original relation for the first iteration),
+and finds new transitive links. It appends these to the current relation, creating a new relation.
+It then compares the length of the new relation to the previous one, which serves as a check whether we have found any
+new pairs this iteration. If we have, we start a new iteration, otherwise we return.
+-}
+
 module Exercise5 where
 
 import Data.List (nub, sort)
