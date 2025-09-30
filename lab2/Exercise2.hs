@@ -1,8 +1,15 @@
 
 -- Time spend: x min
 
+{-
+Test report:
 
+...
 
+The empty tests are using Char sets while the subset and symmetry test use Int Sets, So 2 domains were used.
+-}
+
+import Control.Monad (replicateM)
 import Data.List
 import System.Random
 import Test.QuickCheck
@@ -13,12 +20,7 @@ infix 1 -->
 p --> q = (not p) || q
 
 
-instance (Ord a, Arbitrary a) => Arbitrary (Set a) where
-  arbitrary = do
-    xs <- arbitrary
-    return (list2set xs)
-
-
+-- Returns the intersection between two given sets.
 setIntersection :: Ord a => Set a -> Set a -> Set a
 setIntersection (Set []) _ = emptySet
 setIntersection _ (Set []) = emptySet
@@ -27,17 +29,30 @@ setIntersection (Set (x:xs)) set2
     | otherwise    = setIntersection (Set xs) set2
 
 
-
+-- Returns the union between two given sets.
 setUnion :: Ord a => Set a -> Set a -> Set a
 setUnion (Set []) set2 = set2
 setUnion set1 (Set []) = set1
 setUnion (Set (x:xs)) set2 = insertSet x (setUnion (Set xs) set2)
 
 
+-- Returns the difference between set1 with set2.
 setDifference :: Ord a => Set a -> Set a -> Set a
 setDifference (Set []) _ = emptySet
 setDifference set1 (Set []) = set1
 setDifference set1 (Set (y:ys)) = setDifference (deleteSet y set1) (Set ys)
+
+
+-- Creates a list of random ints between -5 and 5 with length len
+randIntList :: Int -> IO [Int]
+randIntList len = replicateM len (randomRIO (-5, 5))
+
+-- Creates a random-length list of size between 0 and 10 and converts to set
+randSet :: IO (Set Int)
+randSet = do
+    len <- randomRIO (0, 10)
+    xs <- randIntList len
+    return $ list2set xs
 
 
 -- Test symetry
@@ -69,28 +84,41 @@ prop_DifferenceSubset set1 set2 =
 
 
 -- Test empty
-prop_IntersectionEmpty :: Set Int -> Bool
+prop_IntersectionEmpty :: Set Char -> Bool
 prop_IntersectionEmpty set1 =
     isEmpty $ setIntersection emptySet set1
 
-prop_UnionEmpty :: Set Int -> Bool
+prop_UnionEmpty :: Set Char -> Bool
 prop_UnionEmpty set1 =
     setUnion emptySet set1 == set1
 
-prop_DifferenceEmpty :: Set Int -> Bool
+prop_DifferenceEmpty :: Set Char -> Bool
 prop_DifferenceEmpty set1 =
     isEmpty $ setDifference emptySet set1
 
 
+-- Needed so the quickCheck can generate Sets
+instance (Ord a, Arbitrary a) => Arbitrary (Set a) where
+  arbitrary = do
+    xs <- arbitrary
+    return (list2set xs)
+
+
 main :: IO ()
 main = do
-    let set1 = list2set [1,2,3]
-    let set2 = list2set [2,3,4]
+    set1 <- randSet
+    set2 <- randSet
 
-    print $ setIntersection set1 set2 == list2set([2,3])
-    print $ setUnion set1 set2 == list2set([1,2,3,4])
-    print $ setDifference set1 set2 == list2set([1])
+    print "--- Generator tests ---"
+    print set1
+    print set2
 
+    print $ setIntersection set1 set2
+    print $ setUnion set1 set2
+    print $ setDifference set1 set2
+
+
+    print "--- quickCheck tests ---"
     quickCheck prop_IntersectionEmpty
     quickCheck prop_IntersectionSym
     quickCheck prop_IntersectionSubset
