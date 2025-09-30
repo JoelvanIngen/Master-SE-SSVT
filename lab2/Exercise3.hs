@@ -15,6 +15,8 @@ Our implementation fits this definition.
 
 module Exercise3 where
 
+import Data.List
+
 -- Binary relations as a list of pairs
 type Rel a = [(a, a)]
 
@@ -26,4 +28,4 @@ pairInvert (x1, x2) = (x2, x1)
 -- before calling itself on the remainder of the list
 symClos :: Ord a => Rel a -> Rel a
 symClos [] = []
-symClos (x:xs) = x : pairInvert x : symClos xs
+symClos xs = nub (sort (concatMap (\p -> [p, pairInvert p]) xs))
