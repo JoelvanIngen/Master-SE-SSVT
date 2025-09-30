@@ -29,3 +29,6 @@ pairInvert (x1, x2) = (x2, x1)
 symClos :: Ord a => Rel a -> Rel a
 symClos [] = []
 symClos xs = nub (sort (concatMap (\p -> [p, pairInvert p]) xs))
+
+main :: Ord a => Rel a -> Rel a
+main = symClos

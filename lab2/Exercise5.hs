@@ -38,3 +38,6 @@ closureStep rel orig =
 
 trClos :: Ord a => Rel a -> Rel a
 trClos rel = sort $ closureStep rel rel
+
+main :: Ord a => Rel a -> Rel a
+main = trClos
