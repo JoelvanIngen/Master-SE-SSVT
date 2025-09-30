@@ -25,7 +25,7 @@ We test two properties of the set generator:
 Both of these test cases pass, so we can conclude that the implementation is correct.
 -}
 
-module Exercise1 where
+module Exercise1 (main) where
 
 import Control.Monad (replicateM)
 import System.Random (randomRIO)

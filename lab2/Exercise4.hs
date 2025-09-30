@@ -1,4 +1,3 @@
-
 -- Time spent: 240 min
 
 {-Proof:
@@ -48,7 +47,7 @@ Customizing an Arbitrary instance can resolve this issue.
 
 -}
 
-module Exercise4 where
+module Exercise4 (main) where
 
 import Test.QuickCheck
 import Data.List
@@ -92,9 +91,6 @@ prop_monotone dom r extra = isSerial dom r ==> isSerial dom(nub (r ++ extra))
 --Serial defaults to true on empty domains.
 prop_emptyDomain :: Rel Int -> Bool
 prop_emptyDomain r = isSerial [] r == True
-
-
-
 
 main :: IO ()
 main = do

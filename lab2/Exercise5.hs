@@ -8,7 +8,7 @@ It then compares the length of the new relation to the previous one, which serve
 new pairs this iteration. If we have, we start a new iteration, otherwise we return.
 -}
 
-module Exercise5 where
+module Exercise5 (main) where
 
 import Data.List (nub, sort)
 

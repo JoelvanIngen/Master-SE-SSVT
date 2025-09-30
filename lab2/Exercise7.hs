@@ -1,4 +1,4 @@
-module Exercise7 where
+module Exercise7 (main) where
 import Data.List
 
 
@@ -31,15 +31,6 @@ main = do
     putStr "trClos(symClos r) = "
     print (trClos(symClos r))
 
-
-
-
-
-
-
-
-
-
 -- Binary relations as a list of pairs
 type Rel a = [(a, a)]
 
@@ -70,6 +61,3 @@ closureStep rel orig =
 
 trClos :: Ord a => Rel a -> Rel a
 trClos rel = sort $ closureStep rel rel
-
-
-

@@ -1,4 +1,4 @@
-module Exercise6 where
+module Exercise6 (main) where
 
 import Data.List
 import Test.QuickCheck
@@ -93,8 +93,6 @@ main = do
     quickCheck prop_transitivity
     quickCheck prop_idempotence_trClos
 
-
-
 --------The code from the previous exercise-------
 
 -- Binary relations as a list of pairs
@@ -127,13 +125,3 @@ closureStep rel orig =
 
 trClos :: Ord a => Rel a -> Rel a
 trClos rel = sort $ closureStep rel rel
-
-
-
-
-
-
-
-
-
-

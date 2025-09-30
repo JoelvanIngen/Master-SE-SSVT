@@ -13,7 +13,7 @@ The definition of the symmetric closure is:
 Our implementation fits this definition.
 -}
 
-module Exercise3 where
+module Exercise3 (main) where
 
 import Data.List
 
