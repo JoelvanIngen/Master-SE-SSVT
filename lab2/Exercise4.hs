@@ -1,17 +1,57 @@
--- TODO: Increment timer if you're picking up work on this file
--- Time spent: 120 min
+
+-- Time spent: 240 min
+
+{-Proof:
+
+Definition of a serial relation: A relation R is serial over a field A 
+if and only if for every element a in A, there exists some element b in A such that (a, b) ∈ R.
+
+Reflexivity of modular arithmetic: In modular n arithmetic, for any integer x, x ≡ x (mod n). 
+This is a fundamental property of modular arithmetic.
+
+Constructive proof: For any element x in a field A, let y = x. 
+Then: x ≡ x (mod n) holds (by reflexivity).
+
+Therefore, (x, x) ∈ R.
+Since x ∈ A and y = x ∈ A, for every x ∈ A, 
+there exists y ∈ A such that (x, y) ∈ R.
+Conclusion: Since for every element in a field A, we can find a corresponding 
+element (i.e., the element itself) that satisfies relation R, relation R is serial.-}
 
 {- Test report:
 
-R = {(x, y) | x ≡ y(mod n)}, n > 0.
-To be serial, x and y must be in the domain, meaning y(mod n) must also be in the domain.
-It could be tested by verifying that in the relation, every x of a domain has a relation to a y where any mod (> 0) of y is x.
-To prove that R is serial, 
+Implemented a function isSerial to check whether a relation 
+satisfies the serial (surjective) property over a given domain.
+
+Definition: A relation R is serial over a domain A if and only if, 
+    for all x ∈ A, there exists y ∈ A such that (x,y) ∈ R. 
+    To verify the correctness of the implementation, 
+    the following three properties are defined and tested using QuickCheck:
+
+prop_definition_serial: Directly verifies that isSerial is 
+equivalent to "for any x ∈ A, there exists y ∈ A such that (x,y) ∈ R" based on the definition.
+
+prop_monotone: Monotonicity of a relation. 
+If R is serial over A, then adding additional edges to R does not break the seriality.
+
+prop_emptyDomain: Over an empty domain, 
+a relation satisfies vacuously serial.
+
+prop_definition_serial: All passed
+prop_emptyDomain: All passed
+prop_monotone: Some failed. This isn't due to an implementation error, 
+but rather to the fact that the relation data automatically generated 
+by QuickCheck doesn't necessarily meet the prerequisite (i.e., isSerial domain). 
+Customizing an Arbitrary instance can resolve this issue. 
+
+
+
 -}
 
 module Exercise4 where
 
 import Test.QuickCheck
+import Data.List
 
 -- List of pairs
 type Rel a = [(a,a)]
@@ -36,14 +76,28 @@ isSerial :: Eq a => [a] -> Rel a -> Bool
 isSerial domain rel = all (\a -> domainHasPair domain a rel) domain
 
 
--- Property 1: in the relation, every element of the domain relates to another element of the domain
-prop_allToAny :: Rel a -> Bool
-prop_allToAny (r:rs) = False -- TODO: this is basically done in the main code so how to quick test that it does?
+-- Property 1: in the relation, every element of the domain 
+--relates to another element of the domain
+prop_definition_serial :: (Eq a, Show a) => [a] -> Rel a ->Bool
+prop_definition_serial dom r = 
+    isSerial dom r == all(\x -> any (\y -> (x,y) `elem` r) dom) dom
 
 
--- Property 2:
+-- Property 2:If R is serial on A, then adding additional 
+--edges to R does not destroy its serial property.
+prop_monotone :: (Eq a, Show a) => [a] -> Rel a -> Rel a -> Property
+prop_monotone dom r extra = isSerial dom r ==> isSerial dom(nub (r ++ extra)) 
+
+-- Property 3: Null domain boundaries. 
+--Serial defaults to true on empty domains.
+prop_emptyDomain :: Rel Int -> Bool
+prop_emptyDomain r = isSerial [] r == True
+
+
 
 
 main :: IO ()
 main = do
-    quickCheck prop_allToAny
+    quickCheck (prop_definition_serial :: [Int] -> Rel Int -> Bool)
+    quickCheck (prop_monotone :: [Int] -> Rel Int -> Rel Int -> Property)
+    quickCheck prop_emptyDomain
