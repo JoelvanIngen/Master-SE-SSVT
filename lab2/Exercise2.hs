@@ -24,6 +24,7 @@ symmetry test use Int Sets, So 2 domains were used for testing.
 
 These tests all succeeded and from this we can conclude that the functions work propperly.
 -}
+module Exercise2 where
 
 import Control.Monad (replicateM)
 import Data.List
