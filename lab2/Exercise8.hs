@@ -14,6 +14,7 @@ It also checks if the read function reads the same input as the show function is
 It appears all quickChecks are working, therefor it can be concluded
     that the read and show functions work propperly.
 -}
+module Exercise8 where
 
 import Data.List
 import System.Random
