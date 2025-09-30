@@ -1,12 +1,28 @@
 
--- Time spend: x min
+-- Time spend: 150 min
 
 {-
 Test report:
 
-...
+The generator uses a domain between -5 and 5 in order to test both
+    positive and negative numbers.
+It only uses at most 10 numbers in order to make visual inspection
+    easier, and larger list should not change the behaviour.
 
-The empty tests are using Char sets while the subset and symmetry test use Int Sets, So 2 domains were used.
+The generator tests are done by munual inspection or order to quickly
+    check if the functions work correctly on smaller sets.
+And according to these tests the functions work propperly.
+
+The functions are also tested using quickCheck,
+The test that are used are checking if:
+    - the functions work propperly if one of the sets is empty.
+    - the returned set or the input sets are a subset of the other, dependant on the function.
+    - If the function returns the same output based on the order of the input sets.
+
+The emptySet quickCheck tests are using Char Sets while the subset and
+symmetry test use Int Sets, So 2 domains were used for testing.
+
+These tests all succeeded and from this we can conclude that the functions work propperly.
 -}
 
 import Control.Monad (replicateM)
