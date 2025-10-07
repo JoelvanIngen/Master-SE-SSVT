@@ -3,7 +3,8 @@
 {-
 The calculation for this strength is rather simple, just a percentage of the surviving mutants vs.
 the total mutants introduced to the function. The more mutants are killed, the higher the score.
-If using a subset from exercise 3, the results are...
+The scores may change for ignoring redundant or equivalent mutants, but we do not have a way
+to account for those.
 -}
 
 module Exercise4 where
@@ -14,6 +15,7 @@ import Mutation
 import MultiplicationTable
 import Control.Monad
 import Exercise2 (countSurvivors)
+import Exercise3 (findMinimalPropertySubset)
 
 strength :: Integer -> [[Integer] -> Integer -> Bool] -> [[Integer] -> Gen [Integer]] -> (Integer -> [Integer]) -> IO Float
 strength n props muts fut = do
@@ -23,5 +25,8 @@ strength n props muts fut = do
 
 main :: IO ()
 main = do
-    z <- strength 1000 multiplicationTableProps mutators multiplicationTable
-    print z
+    percentage <- strength 1000 multiplicationTableProps mutators multiplicationTable
+    print percentage
+    minimalSubset <- findMinimalPropertySubset multiplicationTableProps multiplicationTable
+    percentage2 <- strength 1000 minimalSubset mutators multiplicationTable
+    print percentage2
