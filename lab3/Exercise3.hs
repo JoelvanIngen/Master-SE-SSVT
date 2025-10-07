@@ -29,9 +29,9 @@ findMinimalPropertySubset props fut = do
 
     let zippedSurvivorsAndIndexes = zip survivorsPerSubset indexSubsets
         subsetsWithMinSurvivors = findSubsetsWithMinSurvivors zippedSurvivorsAndIndexes
-        -- minimumLengthSubsets = findMinimalLengthSubsets subsetsWithMinSurvivors
+        minimumLengthSubsets = findMinimalLengthSubsets subsetsWithMinSurvivors
 
-    return subsetsWithMinSurvivors
+    return minimumLengthSubsets
 
 
 main :: IO ()
