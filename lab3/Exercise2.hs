@@ -6,11 +6,12 @@ The countSurvivor function takes properties and mutators as input and checks how
     mutations are not detected by the properties.
 
 According to the properties the prop_tenElements is the best property because
-    it lets the lowesrt amount of mutants survive, it does mis a few with the anyList mutator
+    it lets the loweset amount of mutants survive, it does mis a few with the anyList mutator
     because those list can be 10 long by chance.
 
 Besides that the removeElement mutator seems to be the hardest mutator to detect.
-    two property checks even let all mutants survive.
+    three property checks even let all mutants survive.
+The other mutators are caught more effectively by the properties. 
 
 But if these properties are combined when all mutators are active they catch all mutants.
     therefor the mutation tests are correct.
@@ -56,10 +57,11 @@ main = do
     survivors <- countSurvivors 4000 [prop_tenElements] [anyList] multiplicationTable
     print survivors
 
-    -- survivors <- countSurvivors 4000 [prop_firstElementIsInput] [anyList] multiplicationTable
-    -- print survivors
+    -- ~50 survivors
+    survivors <- countSurvivors 4000 [prop_firstElementIsInput] [anyList] multiplicationTable
+    print survivors
 
-    -- ~3 survivors
+    -- ~5 survivors
     survivors <- countSurvivors 4000 [prop_sumIsTriangleNumberTimesInput] [anyList] multiplicationTable
     print survivors
 
@@ -76,9 +78,9 @@ main = do
     survivors <- countSurvivors 4000 [prop_tenElements] [removeElements] multiplicationTable
     print survivors
 
-    --  survivors
-    -- survivors <- countSurvivors 4000 [prop_firstElementIsInput] [removeElements] multiplicationTable
-    -- print survivors
+    -- 4000 survivors
+    survivors <- countSurvivors 4000 [prop_firstElementIsInput] [removeElements] multiplicationTable
+    print survivors
 
     -- ~60 survivors
     survivors <- countSurvivors 4000 [prop_sumIsTriangleNumberTimesInput] [removeElements] multiplicationTable
