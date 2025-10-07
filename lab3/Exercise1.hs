@@ -1,5 +1,3 @@
-import Test.QuickCheck
-import Mutation
 -- Time spent: 240 min
 
 {-
@@ -21,6 +19,9 @@ Types of output not yet covered by these mutators:
 - Order modifying: Keeping the length of elements, but changing the order of the elements (can be a single swap)
 - Middle insertion: Inserting an item in the middle (or at least not the head or last) of the list
 -}
+
+import Test.QuickCheck
+import Mutation
 
 -- Reverses the order of the elements in the output list.
 reverseList :: [Integer] -> Gen [Integer]
