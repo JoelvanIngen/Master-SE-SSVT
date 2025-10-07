@@ -5,6 +5,10 @@ The calculation for this strength is rather simple, just a percentage of the sur
 the total mutants introduced to the function. The more mutants are killed, the higher the score.
 The scores may change for ignoring redundant or equivalent mutants, but we do not have a way
 to account for those.
+
+The best properties seem to be tenElements and sumIsTriangleNumberTimesInput, likely
+due to these being very broad and mutants of these easily killed. There is
+a very specific thing the mutation has to adhere to for these to survive.
 -}
 
 module Exercise4 where
@@ -16,6 +20,7 @@ import MultiplicationTable
 import Control.Monad
 import Exercise2 (countSurvivors)
 import Exercise3 (findMinimalPropertySubset)
+import MultiplicationTable (prop_firstElementIsInput, prop_sumIsTriangleNumberTimesInput)
 
 strength :: Integer -> [[Integer] -> Integer -> Bool] -> [[Integer] -> Gen [Integer]] -> (Integer -> [Integer]) -> IO Float
 strength n props muts fut = do
@@ -25,5 +30,20 @@ strength n props muts fut = do
 
 main :: IO ()
 main = do
-    percentage <- strength 1000 multiplicationTableProps mutators multiplicationTable
-    print percentage
+    percent <- strength 1000 multiplicationTableProps mutators multiplicationTable
+    print percent
+
+    percent <- strength 4000 [prop_tenElements] mutators multiplicationTable
+    print percent
+
+    percent <- strength 4000 [prop_firstElementIsInput] mutators multiplicationTable
+    print percent
+
+    percent <- strength 4000 [prop_sumIsTriangleNumberTimesInput] mutators multiplicationTable
+    print percent
+
+    percent <- strength 4000 [prop_linear] mutators multiplicationTable
+    print percent
+
+    percent <- strength 4000 [prop_moduloIsZero] mutators multiplicationTable
+    print percent
