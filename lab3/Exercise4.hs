@@ -27,6 +27,3 @@ main :: IO ()
 main = do
     percentage <- strength 1000 multiplicationTableProps mutators multiplicationTable
     print percentage
-    minimalSubset <- findMinimalPropertySubset multiplicationTableProps multiplicationTable
-    percentage2 <- strength 1000 minimalSubset mutators multiplicationTable
-    print percentage2
