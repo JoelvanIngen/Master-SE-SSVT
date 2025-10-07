@@ -47,3 +47,11 @@ changeRandomElement xs = do
 
 mutators :: [[Integer] -> Gen [Integer]]
 mutators = [anyList, removeElements, addElements, reverseList, changeRandomElement]
+
+main :: IO ()
+main = do
+    let xs = [1,2,3,4,5]
+    print xs -- [1,2,3,4,5]
+    reversed <- generate (reverseList xs)
+    print reversed -- [5,4,3,2,1]
+    sample (changeRandomElement xs) -- several versions of xs with 1 number changed
