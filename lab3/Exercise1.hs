@@ -15,6 +15,7 @@ removeElements
 - Weakness: Cannot remove elements from start or middle and does not modify any existing elements
 
 Types of output not yet covered by these mutators:
+- Reverse list: Test pproperties that rely on the order of the elements
 - Value modifying: Keeping the length and position of elements, but changing one or more values
 - Order modifying: Keeping the length of elements, but changing the order of the elements (can be a single swap)
 - Middle insertion: Inserting an item in the middle (or at least not the head or last) of the list
@@ -24,10 +25,14 @@ import Test.QuickCheck
 import Mutation
 
 -- Reverses the order of the elements in the output list.
+-- Strength: Simple, and a strong test of order-dependence
+-- Weakness: Becomes a non-mutant if the original list is a palindrome
 reverseList :: [Integer] -> Gen [Integer]
 reverseList = return . reverse
 
 -- Changes a random element in the list to an arbitrary value.
+-- Strength: Very targeted and tests for value-specific bugs
+-- Weakness: Does not change length or overall structure and might be too subtle for many properties
 changeRandomElement :: [Integer] -> Gen [Integer]
 changeRandomElement [] = return [] -- Cannot mutate an empty list
 changeRandomElement xs = do
