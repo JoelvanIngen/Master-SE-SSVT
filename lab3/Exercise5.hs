@@ -77,5 +77,13 @@ main = do
     print (isDisjunct pairs)
 
 
-  
-
+    print ("Test For prop_sumIsTriangleNumberTimesInput and prop_moduloIsZero: ")
+    pairs2 <- runTwoProps anyList prop_sumIsTriangleNumberTimesInput prop_moduloIsZero multiplicationTable x 50 
+    putStr ("First five results: ")
+    print (take 5 pairs2)
+    putStr ("isEquivalent: ")
+    print (isEquivalent pairs2)
+    putStr ("isSubset: ")
+    print (isSubset pairs2)
+    putStr ("isDisjunct: ")
+    print (isDisjunct pairs2)
