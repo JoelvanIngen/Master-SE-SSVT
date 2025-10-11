@@ -1,11 +1,11 @@
------------------------- MODULE bc_group6 ------------------------
+------------------------ MODULE bc_6 ------------------------
 EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algorithm
-CONSTANT capacity, bound \* The algorithm's constants - the island's capacity and max number events
+CONSTANT capacity \* The algorithm's constants - the island's capacity and max number events
 
 
 (*
 --algorithm bridgeController {
-    variable n = 0, i = 0;
+    variable n = 0;
 
     procedure enter_island(){
         enter: n := n + 1;
@@ -18,28 +18,27 @@ CONSTANT capacity, bound \* The algorithm's constants - the island's capacity an
     }
 
     {
-        main: while (i < bound) {
+        main: while (TRUE) {
             either
                 if (n < capacity){
                     call enter_island();
                 }
             or
-                call leave_island();
-
-            progress: i := i + 1;
+                if (n > 0) {
+                    call leave_island();
+                }
         }
     }
 }
 *)
 
-\* BEGIN TRANSLATION (chksum(pcal) = "1ffe53d7" /\ chksum(tla) = "43163dd")
-VARIABLES pc, n, i, stack
+\* BEGIN TRANSLATION (chksum(pcal) = "7b4dbe98" /\ chksum(tla) = "bc4c4fc")
+VARIABLES pc, n, stack
 
-vars == << pc, n, i, stack >>
+vars == << pc, n, stack >>
 
 Init == (* Global variables *)
         /\ n = 0
-        /\ i = 0
         /\ stack = << >>
         /\ pc = "main"
 
@@ -47,7 +46,6 @@ enter == /\ pc = "enter"
          /\ n' = n + 1
          /\ pc' = Head(stack).pc
          /\ stack' = Tail(stack)
-         /\ i' = i
 
 enter_island == enter
 
@@ -55,58 +53,50 @@ leave == /\ pc = "leave"
          /\ n' = n - 1
          /\ pc' = Head(stack).pc
          /\ stack' = Tail(stack)
-         /\ i' = i
 
 leave_island == leave
 
 main == /\ pc = "main"
-        /\ IF i < bound
-              THEN /\ \/ /\ IF n < capacity
-                               THEN /\ stack' = << [ procedure |->  "enter_island",
-                                                     pc        |->  "progress" ] >>
-                                                 \o stack
-                                    /\ pc' = "enter"
-                               ELSE /\ pc' = "progress"
-                                    /\ stack' = stack
-                      \/ /\ stack' = << [ procedure |->  "leave_island",
-                                          pc        |->  "progress" ] >>
+        /\ \/ /\ IF n < capacity
+                    THEN /\ stack' = << [ procedure |->  "enter_island",
+                                          pc        |->  "main" ] >>
+                                      \o stack
+                         /\ pc' = "enter"
+                    ELSE /\ pc' = "main"
+                         /\ stack' = stack
+           \/ /\ IF n > 0
+                    THEN /\ stack' = << [ procedure |->  "leave_island",
+                                          pc        |->  "main" ] >>
                                       \o stack
                          /\ pc' = "leave"
-              ELSE /\ pc' = "Done"
-                   /\ stack' = stack
-        /\ UNCHANGED << n, i >>
+                    ELSE /\ pc' = "main"
+                         /\ stack' = stack
+        /\ n' = n
 
-progress == /\ pc = "progress"
-            /\ i' = i + 1
-            /\ pc' = "main"
-            /\ UNCHANGED << n, stack >>
-
-(* Allow infinite stuttering to prevent deadlock on termination. *)
-Terminating == pc = "Done" /\ UNCHANGED vars
-
-Next == enter_island \/ leave_island \/ main \/ progress
-           \/ Terminating
+Next == enter_island \/ leave_island \/ main
 
 Spec == Init /\ [][Next]_vars
-
-Termination == <>(pc = "Done")
 
 \* END TRANSLATION 
 
 
 \* Boolean properties for model checking invariants
 inv0 == n <= capacity \* the maximum number of visitors can't exceed the capacity
-inv1 == i <= bound
+inv1 == n >= 0
 
 (*
-I used a capacity of 50 and a bound of 1000.
-The capacity was chosen to be 50 in order to be able to do different combinations of leaving and entering.
-The bound was chosen to be much higher than the capacity in order to reach every possible state.
+A important design decision I made was to remove the bound.
+This was replaced by the while(TRUE), and this allows the model to simulate all scenarions and not just the ones it happens to find while in those bounds.
+
+The invariants we used are that n is not bigger than the capacity in order to not overrun the island.
+Beside that we had an invariant that n cannot be smaller than 0 because that is not a scenario that can happen in real life.
+The model was tested with a capacity of 1000, 10000 and 100000 in order to verify the model.
+No major differences between the capacity sizes were found besides the increase in distinct state count which is to be expected.
 *)
 
 
 =============================================================================
 \* Modification History
-\* Last modified Thu Oct 09 13:56:45 CEST 2025 by jasperwink
+\* Last modified Sat Oct 11 20:00:17 CEST 2025 by jasperwink
 \* Last modified Wed Aug 13 16:02:24 CEST 2025 by tv
 \* Created Mon Jun 16 14:24:22 CEST 2025 by tv

@@ -1,4 +1,4 @@
------------------------ MODULE dd_6 ------------------------
+----------------------- MODULE dd_improved_6 ------------------------
 EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algorithm
 \* NB: this code contains *much* fewer labels than the bridge_controller model. This allows you to add labels where you find them most informative.
 (*
@@ -327,6 +327,9 @@ Once in the middle they can exit if a person from the other side opens the other
 The propossed solution of FormalSecure works in keeping unauthorized people out.
 It does however cause a new issue which is that the door is now forever stuck when someone tries to sneak in.
 This is because the door cannot be opened from the outside and the person in the middle has no authorization to open the door from the inside.
+
+An solution without the need for a sensor in the middle would be:
+To close the door imediatly when someone exits the middle so when the person forgets it someone 
 *)
 
 ============================================================================
