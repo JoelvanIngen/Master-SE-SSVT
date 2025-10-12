@@ -22,6 +22,5 @@ cabal.project.local~
 .HTF/
 .ghc.environment.*
 
-bc_6.toolbox/
-dd_6.toolbox/
+*.toolbox/
 .DS_Store

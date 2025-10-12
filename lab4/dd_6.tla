@@ -37,9 +37,9 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
         check_openable: 
         if (left_door = "closed" /\ right_door = "closed") {
             person_who_moved := "none";
-            open: 
+            open:
             either
-                if (left = "left_person" /\ door_opened_from # "inside" /\ mid = "empty") {
+                if (left = "left_person" /\ ~(door_opened_from = "inside" /\ mid # "empty")) {
                     left_door := "open";
                     door_opened_from := "outside";
                 };
@@ -49,7 +49,7 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
                     door_opened_from := "inside";
                 };
             or
-                if (right = "right_person" /\ door_opened_from # "inside" /\ mid = "empty") {
+                if (right = "right_person" /\ ~(door_opened_from = "inside" /\ mid # "empty")) {
                     right_door := "open";
                     door_opened_from := "outside";
                 };
@@ -118,7 +118,7 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
     }
 }
 *)
-\* BEGIN TRANSLATION (chksum(pcal) = "3b11cb1c" /\ chksum(tla) = "d62f013c")
+\* BEGIN TRANSLATION (chksum(pcal) = "2651af5f" /\ chksum(tla) = "556074a7")
 VARIABLES pc, left_door, right_door, left, mid, right, person_who_moved, 
           door_opened_from, stack
 
@@ -187,7 +187,7 @@ check_openable == /\ pc = "check_openable"
                                   door_opened_from, stack >>
 
 open == /\ pc = "open"
-        /\ \/ /\ IF left = "left_person" /\ door_opened_from # "inside" /\ mid = "empty"
+        /\ \/ /\ IF left = "left_person" /\ ~(door_opened_from = "inside" /\ mid # "empty")
                     THEN /\ left_door' = "open"
                          /\ door_opened_from' = "outside"
                     ELSE /\ TRUE
@@ -199,7 +199,7 @@ open == /\ pc = "open"
                     ELSE /\ TRUE
                          /\ UNCHANGED << left_door, door_opened_from >>
               /\ UNCHANGED right_door
-           \/ /\ IF right = "right_person" /\ door_opened_from # "inside" /\ mid = "empty"
+           \/ /\ IF right = "right_person" /\ ~(door_opened_from = "inside" /\ mid # "empty")
                     THEN /\ right_door' = "open"
                          /\ door_opened_from' = "outside"
                     ELSE /\ TRUE
@@ -317,16 +317,17 @@ Spec == Init /\ [][Next]_vars
 inv0 == ~(left_door = "open" /\ right_door = "open")
 \* Check if the middle person doesn't move if someone from the outside opened to door.
 inv1 == ~(person_who_moved = "mid" /\ door_opened_from = "outside")
+\* Check if someone from the outside tries to sneak in when the door is left open.
+\*inv2 == ~((person_who_moved = "left" \/ person_who_moved = "right") /\  door_opened_from = "inside")
 
 (*
-
 According to the test the hypothesis from FormalSecure was correct.
 It appears an unauthorized person can enter the middle once an authorized person leaves the middle and the door stays open.
 Once in the middle they can exit if a person from the other side opens the other door.
 
 The propossed solution of FormalSecure works in keeping unauthorized people out.
-It does however cause a new issue which is that the door is now forever stuck when someone tries to sneak in.
-This is because the door cannot be opened from the outside and the person in the middle has no authorization to open the door from the inside.
+But it still allows someone from the outside to open the door for someone that is in the middle.
+Only if that person in the middle entered the middle by opening a outside door.
 *)
 
 ============================================================================
