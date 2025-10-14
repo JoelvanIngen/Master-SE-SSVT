@@ -14,7 +14,7 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
     
     \* Someone may arrive at the left or right side of the doors.
     procedure new_arrival(){
-        arrive: 
+        arrive:
         either
             if (left = "empty") left := "left_person";
         or
@@ -315,7 +315,7 @@ Spec == Init /\ [][Next]_vars
 \* Write down useful invariants here:
 \* Both doors cannot be open at the same time.
 inv0 == ~(left_door = "open" /\ right_door = "open")
-\* Check if the middle person doesn't move if someone from the outside opened to door.
+\* Check if the middle person moves if someone from the outside opened to door.
 inv1 == ~(person_who_moved = "mid" /\ door_opened_from = "outside")
 \* Check if someone from the outside tries to sneak in when the door is left open.
 \*inv2 == ~((person_who_moved = "left" \/ person_who_moved = "right") /\  door_opened_from = "inside")
@@ -328,6 +328,7 @@ Once in the middle they can exit if a person from the other side opens the other
 The propossed solution of FormalSecure works in keeping unauthorized people out.
 But it still allows someone from the outside to open the door for someone that is in the middle.
 Only if that person in the middle entered the middle by opening a outside door.
+So an unauthorized person can still enter the middle once someone opens the door from the outside, by either cutting in front and wait untill someone from the other side opens the other door.
 *)
 
 ============================================================================

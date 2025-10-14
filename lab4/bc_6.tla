@@ -81,8 +81,8 @@ Spec == Init /\ [][Next]_vars
 
 
 \* Boolean properties for model checking invariants
-inv0 == n <= capacity \* the maximum number of visitors can't exceed the capacity
-inv1 == n >= 0
+inv0 == n <= capacity \* the maximum number of visitors can't exceed the capacity.
+inv1 == n >= 0 \* The number of people on the island cannot be negative.
 
 (*
 A important design decision I made was to remove the bound.
@@ -97,6 +97,6 @@ No major differences between the capacity sizes were found besides the increase 
 
 =============================================================================
 \* Modification History
-\* Last modified Sat Oct 11 20:00:17 CEST 2025 by jasperwink
+\* Last modified Tue Oct 14 13:20:56 CEST 2025 by jasperwink
 \* Last modified Wed Aug 13 16:02:24 CEST 2025 by tv
 \* Created Mon Jun 16 14:24:22 CEST 2025 by tv
