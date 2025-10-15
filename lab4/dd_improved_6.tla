@@ -81,13 +81,11 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
                     right := mid;
                     mid := "empty";
                     person_who_moved := "mid";
-                    right_door := "closed";
                     };
         else if (mid = "right_person" /\ left_door = "open") {
                     left := mid;
                     mid := "empty";
                     person_who_moved := "mid";
-                    left_door := "closed";
                     };
         else if (mid = "empty") {
             if (left = "left_person" /\ left_door = "open") {
