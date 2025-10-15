@@ -12,7 +12,6 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
 
              left_door_opened_from = "none";
              right_door_opened_from = "none";
-             last_door_opened_from = "none";
              
              left_door_closed_from = "none";
              right_door_closed_from = "none";
@@ -50,25 +49,21 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
                 if (left = "left_person" /\ right_door_closed_from = "outside") {
                     left_door := "open";
                     left_door_opened_from := "outside";
-                    last_door_opened_from := "outside";
                 };
             or
                 if (mid = "right_person") {
                     left_door := "open";
                     left_door_opened_from := "inside";
-                    last_door_opened_from := "inside";
                 };
             or
                 if (right = "right_person" /\ left_door_closed_from = "outside") {
                     right_door := "open";
                     right_door_opened_from := "outside";
-                    last_door_opened_from := "outside";
                 };
             or 
                 if (mid = "left_person") {
                     right_door := "open";
                     right_door_opened_from := "inside";
-                    last_door_opened_from := "inside";
                 };
         };
         opened: return;
@@ -103,43 +98,35 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
         if (mid = "left_person" /\ right_door = "open") {
                     right := mid;
                     mid := "empty";
-                    if (right_door_opened_from = "outside") {
+                    if (right_door_opened_from = "outside")
                         unauthorized_mid_exit := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_exit := FALSE;
-                    };
         };
         else if (mid = "right_person" /\ left_door = "open") {
                     left := mid;
                     mid := "empty";
-                    if (left_door_opened_from = "outside") {
+                    if (left_door_opened_from = "outside")
                         unauthorized_mid_exit := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_exit := FALSE;
-                    };
         };
         else if (mid = "empty") {
             if (left = "left_person" /\ left_door = "open") {
                     mid := left;
                     left := "empty";
-                    if (left_door_opened_from = "inside") {
+                    if (left_door_opened_from = "inside")
                         unauthorized_mid_entry := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_entry := FALSE;
-                    };
             };
             else if (right = "right_person" /\ right_door = "open") {
                     mid := right;
                     right := "empty";
-                    if (right_door_opened_from = "inside") {
+                    if (right_door_opened_from = "inside")
                         unauthorized_mid_entry := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_entry := FALSE;
-                    };
             };
         };
         return;
@@ -162,16 +149,16 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
     }
 }
 *)
-\* BEGIN TRANSLATION (chksum(pcal) = "84feb308" /\ chksum(tla) = "e0a0e306")
+\* BEGIN TRANSLATION (chksum(pcal) = "e6214d7d" /\ chksum(tla) = "8c5eb9e4")
 VARIABLES pc, left_door, right_door, left, mid, right, left_door_opened_from, 
-          right_door_opened_from, last_door_opened_from, 
-          left_door_closed_from, right_door_closed_from, 
-          unauthorized_mid_entry, unauthorized_mid_exit, stack
+          right_door_opened_from, left_door_closed_from, 
+          right_door_closed_from, unauthorized_mid_entry, 
+          unauthorized_mid_exit, stack
 
 vars == << pc, left_door, right_door, left, mid, right, left_door_opened_from, 
-           right_door_opened_from, last_door_opened_from, 
-           left_door_closed_from, right_door_closed_from, 
-           unauthorized_mid_entry, unauthorized_mid_exit, stack >>
+           right_door_opened_from, left_door_closed_from, 
+           right_door_closed_from, unauthorized_mid_entry, 
+           unauthorized_mid_exit, stack >>
 
 Init == (* Global variables *)
         /\ left_door = "closed"
@@ -181,7 +168,6 @@ Init == (* Global variables *)
         /\ right = "empty"
         /\ left_door_opened_from = "none"
         /\ right_door_opened_from = "none"
-        /\ last_door_opened_from = "none"
         /\ left_door_closed_from = "none"
         /\ right_door_closed_from = "none"
         /\ unauthorized_mid_entry = FALSE
@@ -203,9 +189,9 @@ arrive == /\ pc = "arrive"
           /\ pc' = Head(stack).pc
           /\ stack' = Tail(stack)
           /\ UNCHANGED << left_door, right_door, mid, left_door_opened_from, 
-                          right_door_opened_from, last_door_opened_from, 
-                          left_door_closed_from, right_door_closed_from, 
-                          unauthorized_mid_entry, unauthorized_mid_exit >>
+                          right_door_opened_from, left_door_closed_from, 
+                          right_door_closed_from, unauthorized_mid_entry, 
+                          unauthorized_mid_exit >>
 
 new_arrival == arrive
 
@@ -222,18 +208,17 @@ depart == /\ pc = "depart"
                 /\ left' = left
           /\ pc' = "departed"
           /\ UNCHANGED << left_door, right_door, mid, left_door_opened_from, 
-                          right_door_opened_from, last_door_opened_from, 
-                          left_door_closed_from, right_door_closed_from, 
-                          unauthorized_mid_entry, unauthorized_mid_exit, stack >>
+                          right_door_opened_from, left_door_closed_from, 
+                          right_door_closed_from, unauthorized_mid_entry, 
+                          unauthorized_mid_exit, stack >>
 
 departed == /\ pc = "departed"
             /\ pc' = Head(stack).pc
             /\ stack' = Tail(stack)
             /\ UNCHANGED << left_door, right_door, left, mid, right, 
                             left_door_opened_from, right_door_opened_from, 
-                            last_door_opened_from, left_door_closed_from, 
-                            right_door_closed_from, unauthorized_mid_entry, 
-                            unauthorized_mid_exit >>
+                            left_door_closed_from, right_door_closed_from, 
+                            unauthorized_mid_entry, unauthorized_mid_exit >>
 
 person_leaves == depart \/ departed
 
@@ -244,7 +229,7 @@ check_openable == /\ pc = "check_openable"
                   /\ UNCHANGED << left_door, right_door, left, mid, right, 
                                   left_door_opened_from, 
                                   right_door_opened_from, 
-                                  last_door_opened_from, left_door_closed_from, 
+                                  left_door_closed_from, 
                                   right_door_closed_from, 
                                   unauthorized_mid_entry, 
                                   unauthorized_mid_exit, stack >>
@@ -253,34 +238,26 @@ open == /\ pc = "open"
         /\ \/ /\ IF left = "left_person" /\ right_door_closed_from = "outside"
                     THEN /\ left_door' = "open"
                          /\ left_door_opened_from' = "outside"
-                         /\ last_door_opened_from' = "outside"
                     ELSE /\ TRUE
-                         /\ UNCHANGED << left_door, left_door_opened_from, 
-                                         last_door_opened_from >>
+                         /\ UNCHANGED << left_door, left_door_opened_from >>
               /\ UNCHANGED <<right_door, right_door_opened_from>>
            \/ /\ IF mid = "right_person"
                     THEN /\ left_door' = "open"
                          /\ left_door_opened_from' = "inside"
-                         /\ last_door_opened_from' = "inside"
                     ELSE /\ TRUE
-                         /\ UNCHANGED << left_door, left_door_opened_from, 
-                                         last_door_opened_from >>
+                         /\ UNCHANGED << left_door, left_door_opened_from >>
               /\ UNCHANGED <<right_door, right_door_opened_from>>
            \/ /\ IF right = "right_person" /\ left_door_closed_from = "outside"
                     THEN /\ right_door' = "open"
                          /\ right_door_opened_from' = "outside"
-                         /\ last_door_opened_from' = "outside"
                     ELSE /\ TRUE
-                         /\ UNCHANGED << right_door, right_door_opened_from, 
-                                         last_door_opened_from >>
+                         /\ UNCHANGED << right_door, right_door_opened_from >>
               /\ UNCHANGED <<left_door, left_door_opened_from>>
            \/ /\ IF mid = "left_person"
                     THEN /\ right_door' = "open"
                          /\ right_door_opened_from' = "inside"
-                         /\ last_door_opened_from' = "inside"
                     ELSE /\ TRUE
-                         /\ UNCHANGED << right_door, right_door_opened_from, 
-                                         last_door_opened_from >>
+                         /\ UNCHANGED << right_door, right_door_opened_from >>
               /\ UNCHANGED <<left_door, left_door_opened_from>>
         /\ pc' = "opened"
         /\ UNCHANGED << left, mid, right, left_door_closed_from, 
@@ -292,9 +269,8 @@ opened == /\ pc = "opened"
           /\ stack' = Tail(stack)
           /\ UNCHANGED << left_door, right_door, left, mid, right, 
                           left_door_opened_from, right_door_opened_from, 
-                          last_door_opened_from, left_door_closed_from, 
-                          right_door_closed_from, unauthorized_mid_entry, 
-                          unauthorized_mid_exit >>
+                          left_door_closed_from, right_door_closed_from, 
+                          unauthorized_mid_entry, unauthorized_mid_exit >>
 
 open_door == check_openable \/ open \/ opened
 
@@ -317,17 +293,16 @@ close == /\ pc = "close"
                /\ UNCHANGED <<left_door, left_door_closed_from>>
          /\ pc' = "closed"
          /\ UNCHANGED << left, mid, right, left_door_opened_from, 
-                         right_door_opened_from, last_door_opened_from, 
-                         unauthorized_mid_entry, unauthorized_mid_exit, stack >>
+                         right_door_opened_from, unauthorized_mid_entry, 
+                         unauthorized_mid_exit, stack >>
 
 closed == /\ pc = "closed"
           /\ pc' = Head(stack).pc
           /\ stack' = Tail(stack)
           /\ UNCHANGED << left_door, right_door, left, mid, right, 
                           left_door_opened_from, right_door_opened_from, 
-                          last_door_opened_from, left_door_closed_from, 
-                          right_door_closed_from, unauthorized_mid_entry, 
-                          unauthorized_mid_exit >>
+                          left_door_closed_from, right_door_closed_from, 
+                          unauthorized_mid_entry, unauthorized_mid_exit >>
 
 close_door == close \/ closed
 
@@ -373,8 +348,8 @@ who_walks == /\ pc = "who_walks"
              /\ pc' = Head(stack).pc
              /\ stack' = Tail(stack)
              /\ UNCHANGED << left_door, right_door, left_door_opened_from, 
-                             right_door_opened_from, last_door_opened_from, 
-                             left_door_closed_from, right_door_closed_from >>
+                             right_door_opened_from, left_door_closed_from, 
+                             right_door_closed_from >>
 
 walk == who_walks
 
@@ -401,9 +376,8 @@ main == /\ pc = "main"
               /\ pc' = "who_walks"
         /\ UNCHANGED << left_door, right_door, left, mid, right, 
                         left_door_opened_from, right_door_opened_from, 
-                        last_door_opened_from, left_door_closed_from, 
-                        right_door_closed_from, unauthorized_mid_entry, 
-                        unauthorized_mid_exit >>
+                        left_door_closed_from, right_door_closed_from, 
+                        unauthorized_mid_entry, unauthorized_mid_exit >>
 
 Next == new_arrival \/ person_leaves \/ open_door \/ close_door \/ walk
            \/ main

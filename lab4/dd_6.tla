@@ -88,43 +88,35 @@ EXTENDS Integers, Naturals, Sequences \* The necessary "imports" to run the algo
         if (mid = "left_person" /\ right_door = "open") {
                     right := mid;
                     mid := "empty";
-                    if (right_door_opened_from = "outside") {
+                    if (right_door_opened_from = "outside")
                         unauthorized_mid_exit := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_exit := FALSE;
-                    };
         };
         else if (mid = "right_person" /\ left_door = "open") {
                     left := mid;
                     mid := "empty";
-                    if (left_door_opened_from = "outside") {
+                    if (left_door_opened_from = "outside")
                         unauthorized_mid_exit := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_exit := FALSE;
-                    };
         };
         else if (mid = "empty") {
             if (left = "left_person" /\ left_door = "open") {
                     mid := left;
                     left := "empty";
-                    if (left_door_opened_from = "inside") {
+                    if (left_door_opened_from = "inside")
                         unauthorized_mid_entry := TRUE;
-                    };
-                    else {
+                    else 
                         unauthorized_mid_entry := FALSE;
-                    };
             };
             else if (right = "right_person" /\ right_door = "open") {
                     mid := right;
                     right := "empty";
-                    if (right_door_opened_from = "inside") {
+                    if (right_door_opened_from = "inside")
                         unauthorized_mid_entry := TRUE;
-                    };
-                    else {
+                    else
                         unauthorized_mid_entry := FALSE;
-                    };
             };
         };
         return;
