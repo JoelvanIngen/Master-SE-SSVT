@@ -1,3 +1,4 @@
+module Exercise4 where
 import Data.List
 import LTS
 import Test.QuickCheck
@@ -83,4 +84,5 @@ main = do
 
   putStrLn "=== Test coffeeImpl5 ==="
   printAfterForTraces coffeeImpl5 10
+
   printAfterForSTraces coffeeImpl5 10
