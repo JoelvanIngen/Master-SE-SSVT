@@ -1,11 +1,23 @@
+-- Time spend: 180 min
+
+{-
+The build IOLTS generator follows the format given in LTS.hs
+It consists of:
+([allStates], [inputLabels], [outputLabels], [LabeledTransition], beginState)
+The amount of states, input- outputlabels and transitions can be changed in the code.
+
+It passes all quickChecks given the properties of exercise 1.
+Therefor it can be assumed that the generated IOLTS is valid.
+-}
+
 module Exercise2 where
 
-import Control.Monad (replicateM)
+import Data.List
+import LTS
 import Test.QuickCheck
-import Data.List (nub)
+import Control.Monad
 
-import LTS (State, LabeledTransition, Label, IOLTS, tau)
-import Exercise1 (validateLTS, prop_MinimalValidIsCorrect, prop_InvalidTransitionStateMakesInvalid,
+import Exercise1 (prop_MinimalValidIsCorrect, prop_InvalidTransitionStateMakesInvalid,
                   prop_MissingInitialStateMakesInvalid, prop_InputOutputOverlapMakesInvalid,
                   prop_TauInLabelsMakesInvalid, prop_UnknownLabelInTransitionMakesInvalid)
 
@@ -40,7 +52,7 @@ genLabel prefix = do
     return $ prefix ++ show labelName
 
 
--- type LabeledTransition = (State, Label, State)
+-- Generate transitions with the format (beginState, label, outputState)
 genTransition :: [State] -> [Label] -> [Label] -> Gen LabeledTransition
 genTransition states inputLabels outputLabels = do
     s0 <- elements states
@@ -49,6 +61,7 @@ genTransition states inputLabels outputLabels = do
     return (s0, label, s1)
 
 
+-- Check if the exercise 1 properties hold
 main :: IO ()
 main = do
     quickCheck prop_MinimalValidIsCorrect
