@@ -8,6 +8,17 @@ The amount of states, input- outputlabels and transitions can be changed in the 
 
 It passes all quickChecks given the properties of exercise 1.
 Therefor it can be assumed that the generated IOLTS is valid.
+
+
+Test coverage:
+The tests only use a single type of generator so edge cases may not be covered.
+It does however test all properties of exercise 1 meaning it covers the basic IOLTS functionality
+
+We also do not test edge cases of the IOLTS explicity. For instance:
+What happens if we give an empty IOLTS
+Or what happens if we give a super large IOLTS
+What happens if we have unreachable state (this one probabliy doesn't matter but we don't know for sure cause we don't test)
+Lastly we don't test for invalid IOLTSes because we assume that the generator creates correct IOLTSes
 -}
 
 module Exercise2 where
