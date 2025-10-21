@@ -1,4 +1,3 @@
--- TODO: REMOVE `testIOLTS` VARIABLE WHEN WE HAVE AN IOLTS GENERATOR
 -- Time spent: 300 min
 
 module Exercise3 where
@@ -6,14 +5,12 @@ module Exercise3 where
 import Test.QuickCheck
 import LTS
 import Data.List
+import Exercise2 (ltsGen)
 
 -- Maximum search depth to prevent infinite loops
 maxDepth :: Int
 maxDepth = 100
 
--- TODO: REMOVE WHEN WE HAVE THE IOLTS GENERATOR
-testIOLTS :: IOLTS
-testIOLTS = createIOLTS [(1, "?a", 2), (2, "!b", 1), (1, "?c", 3)]
 
 -- Finds and returns all traces of an IOLTS up to a maximum depth
 straces :: IOLTS -> [Trace]
@@ -36,8 +33,10 @@ straces (_, _, _, transitions, initialState) =
                         (src, lbl, dst) <- transitions, src == state, state' <- [dst]])
                         currentPairs  -- Apply concatMap to currentPairs
 
+
 genIOLTSTrace :: Gen Trace
 genIOLTSTrace = do
-    let allTraces = straces testIOLTS
+    generatedIOLTS <- ltsGen
+    let allTraces = straces generatedIOLTS
     -- Select random element from the list
     elements allTraces
